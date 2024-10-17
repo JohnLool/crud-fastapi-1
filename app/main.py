@@ -2,7 +2,7 @@ import asyncio
 from typing import List, Annotated
 from fastapi import FastAPI, Depends
 
-from database import create_db
+from database import create_db, insert_in_db
 from schemas import UserCreate, UserBase, UserUpdate
 app = FastAPI()
 
@@ -18,6 +18,8 @@ app = FastAPI()
 
 async def main():
     await create_db()
+    await insert_in_db()
 
 if __name__ == "__main__":
     asyncio.run(main())
+
