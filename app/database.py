@@ -4,9 +4,9 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 from sqlalchemy.orm import Session, sessionmaker, DeclarativeBase
 from sqlalchemy import URL, create_engine, text, insert
 
-from app.models import User, Base
-from config import settings
-
+from app.models import UserOrm, Base, PostOrm
+from app.config import settings
+from app.schemas import UserCreate, PostCreate
 
 engine = create_async_engine(
     url=settings.database_url,
@@ -23,8 +23,23 @@ async def create_db():
         await conn.run_sync(Base.metadata.create_all)
 
 
-async def insert_in_db():
-    user_test = User(username="user", email='user@gmail.com', password="qwerty123")
+async def insert_user(user: UserCreate):
+    user_to_add = UserOrm(
+        username=user.username,
+        email=user.email,
+        password=user.password
+    )
     async with session_factory() as session:
-        session.add(user_test)
+        session.add(user_to_add)
+        await session.commit()
+
+
+async def insert_post(post: PostCreate):
+    post_to_add = PostOrm(
+        title=post.title,
+        description=post.description,
+        user_id=post.user_id
+    )
+    async with session_factory() as session:
+        session.add(post_to_add)
         await session.commit()

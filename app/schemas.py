@@ -10,5 +10,20 @@ class UserCreate(UserBase):
     password: str
 
 
+class UserGet(UserBase):
+    id: int
+
+
 class UserUpdate(UserBase):
     password: str = None
+
+
+class PostCreate(BaseModel):
+    user_id: int
+    title: str
+    description: str
+
+
+class PostUpdate(PostCreate):
+    title: str | None
+    description: str | None
