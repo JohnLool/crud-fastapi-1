@@ -1,8 +1,5 @@
-import asyncio
-
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
-from sqlalchemy.orm import Session, sessionmaker, DeclarativeBase
-from sqlalchemy import URL, create_engine, text, insert
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from app.models import UserOrm, Base, PostOrm
 from app.config import settings
@@ -21,6 +18,30 @@ async def create_db():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
+
+
+async def get_all_users():
+    async with session_factory() as session:
+        result = await session.execute(select(UserOrm))
+        return result.scalars().all()
+
+
+async def get_user_by_id(user_id: int):
+    async with session_factory() as session:
+        result = await session.execute(select(UserOrm).filter(UserOrm.id == user_id))
+        return result.scalar_one_or_none()
+
+
+async def get_all_posts():
+    async with session_factory() as session:
+        result = await session.execute(select(PostOrm))
+        return result.scalars().all()
+
+
+async def get_post_by_id(post_id: int):
+    async with session_factory() as session:
+        result = await session.execute(select(PostOrm).filter(PostOrm.id == post_id))
+        return result.scalar_one_or_none()
 
 
 async def insert_user(user: UserCreate):

@@ -4,7 +4,7 @@ from sqlalchemy import Integer, String, ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_column, declarative_base
 
 
-intpk = Annotated[int, mapped_column(primary_key=True)]
+intpk = Annotated[int, mapped_column(Integer, primary_key=True)]
 
 Base = declarative_base()
 

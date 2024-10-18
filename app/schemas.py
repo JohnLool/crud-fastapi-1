@@ -24,6 +24,10 @@ class PostCreate(BaseModel):
     description: str
 
 
+class PostGet(PostCreate):
+    id: int
+
+
 class PostUpdate(PostCreate):
     title: str | None
     description: str | None
