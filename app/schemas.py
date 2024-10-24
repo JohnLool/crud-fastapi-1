@@ -14,20 +14,25 @@ class UserGet(UserBase):
     id: int
 
 
-class UserUpdate(UserBase):
-    password: str = None
+class UserUpdate(UserCreate):
+    username: str | None = None
+    email: EmailStr | None = None
+    password: str | None = None
 
 
-class PostCreate(BaseModel):
-    user_id: int
+class PostBase(BaseModel):
     title: str
     description: str
+
+
+class PostCreate(PostBase):
+    user_id: int
 
 
 class PostGet(PostCreate):
     id: int
 
 
-class PostUpdate(PostCreate):
-    title: str | None
-    description: str | None
+class PostUpdate(PostBase):
+    title: str | None = None
+    description: str | None = None

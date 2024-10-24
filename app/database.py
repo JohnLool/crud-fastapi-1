@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from app.models import UserOrm, Base, PostOrm
 from app.config import settings
-from app.schemas import UserCreate, PostCreate
+from app.schemas import UserCreate, PostCreate, UserUpdate, PostUpdate
 
 engine = create_async_engine(
     url=settings.database_url,
@@ -55,6 +55,17 @@ async def insert_user(user: UserCreate):
         await session.commit()
 
 
+async def update_user(user_id: int, user_data: UserUpdate):
+    async with session_factory() as session:
+        user = await session.get(UserOrm, user_id)
+        user.username = user_data.username or user.username
+        user.email = user_data.email or user.email
+        user.password = user_data.password or user.password
+        await session.commit()
+        await session.refresh(user)
+        return user
+
+
 async def insert_post(post: PostCreate):
     post_to_add = PostOrm(
         title=post.title,
@@ -64,3 +75,13 @@ async def insert_post(post: PostCreate):
     async with session_factory() as session:
         session.add(post_to_add)
         await session.commit()
+
+
+async def update_post(post_id: int, post_data: PostUpdate):
+    async with session_factory() as session:
+        post = await session.get(PostOrm, post_id)
+        post.title = post_data.title or post.title
+        post.description = post_data.description or post.description
+        await session.commit()
+        await session.refresh(post)
+        return post
