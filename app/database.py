@@ -26,7 +26,7 @@ async def get_all_users():
         return result.scalars().all()
 
 
-async def get_user_by_id(user_id: int):
+async def get_user(user_id: int):
     async with session_factory() as session:
         result = await session.execute(select(UserOrm).filter(UserOrm.id == user_id))
         return result.scalar_one_or_none()
@@ -38,7 +38,7 @@ async def get_all_posts():
         return result.scalars().all()
 
 
-async def get_post_by_id(post_id: int):
+async def get_post(post_id: int):
     async with session_factory() as session:
         result = await session.execute(select(PostOrm).filter(PostOrm.id == post_id))
         return result.scalar_one_or_none()
@@ -84,4 +84,20 @@ async def update_post(post_id: int, post_data: PostUpdate):
         post.description = post_data.description or post.description
         await session.commit()
         await session.refresh(post)
+        return post
+
+
+async def delete_user(user_id: int):
+    async with session_factory() as session:
+        user = await session.get(UserOrm, user_id)
+        await session.delete(user)
+        await session.commit()
+        return user
+
+
+async def delete_post(post_id: int):
+    async with session_factory() as session:
+        post = await session.get(PostOrm, post_id)
+        await session.delete(post)
+        await session.commit()
         return post

@@ -1,10 +1,9 @@
 import asyncio
 from typing import List, Annotated
 from fastapi import FastAPI, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_all_posts, get_post_by_id, create_db, session_factory, get_user_by_id, get_all_users, \
-    insert_user, insert_post, update_user, update_post
+from app.database import get_all_posts, get_post, create_db, get_user, get_all_users, \
+    insert_user, insert_post, update_user, update_post, delete_user, delete_post
 from app.schemas import UserCreate, UserGet, PostGet, PostCreate, UserUpdate, PostCreate, PostUpdate
 
 app = FastAPI()
@@ -29,8 +28,8 @@ async def get_users():
 
 
 @app.get("/users/{user_id}", response_model=UserGet)
-async def get_user(user_id: int):
-    user = await get_user_by_id(user_id)
+async def get_user_by_id(user_id: int):
+    user = await get_user(user_id)
     return user
 
 
@@ -41,8 +40,8 @@ async def get_posts():
 
 
 @app.get("/posts/{post_id}", response_model=PostGet)
-async def get_post(post_id: int):
-    post = await get_post_by_id(post_id)
+async def get_post_by_id(post_id: int):
+    post = await get_post(post_id)
     return post
 
 
@@ -56,6 +55,18 @@ async def update_user_by_id(user_id: int, user_data: Annotated[UserUpdate, Depen
 async def update_post_by_id(post_id: int, post_data: Annotated[PostUpdate, Depends()]):
     updated_post = await update_post(post_id, post_data)
     return updated_post
+
+
+@app.delete("/users/{user_id}", response_model=UserGet)
+async def delete_user_by_id(user_id: int):
+    deleted_user = await delete_user(user_id)
+    return deleted_user
+
+
+@app.delete("/posts/{post_id}", response_model=PostGet)
+async def delete_post_by_id(post_id: int):
+    deleted_post = await delete_post(post_id)
+    return deleted_post
 
 
 async def main():

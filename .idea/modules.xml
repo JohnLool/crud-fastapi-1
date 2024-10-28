@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/learn-fastapi-4.iml" filepath="$PROJECT_DIR$/.idea/learn-fastapi-4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/crud-fastapi-1.iml" filepath="$PROJECT_DIR$/.idea/crud-fastapi-1.iml" />
     </modules>
   </component>
 </project>
