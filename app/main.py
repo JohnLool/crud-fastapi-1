@@ -1,6 +1,7 @@
 import asyncio
 from typing import List, Annotated
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import get_all_posts, get_post, create_db, get_user, get_all_users, \
     insert_user, insert_post, update_user, update_post, delete_user, delete_post
@@ -8,6 +9,13 @@ from app.schemas import UserCreate, UserGet, PostGet, PostCreate, UserUpdate, Po
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5500"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/users/", response_model=UserCreate)
 async def add_user(user: Annotated[UserCreate, Depends()]):
