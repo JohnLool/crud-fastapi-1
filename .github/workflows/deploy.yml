@@ -22,7 +22,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd /root/crud-fastapi-1
-            git pull origin main
+            git fetch --all
+            git reset --hard origin/main
             source venv/bin/activate
             pip install -r requirements.txt
             sudo systemctl restart crud-fastapi-1.service
