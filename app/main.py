@@ -19,13 +19,13 @@ app.add_middleware(
 )
 
 @app.post("/users/", response_model=UserCreate)
-async def add_user(user: Annotated[UserCreate, Depends()]):
+async def add_user(user: UserCreate):
     await insert_user(user)
     return user
 
 
 @app.post("/posts/", response_model=PostCreate)
-async def add_post(post: Annotated[PostCreate, Depends()]):
+async def add_post(post: PostCreate):
     await insert_post(post)
     return post
 
@@ -55,13 +55,13 @@ async def get_post_by_id(post_id: int):
 
 
 @app.put("/users/{user_id}", response_model=UserGet)
-async def update_user_by_id(user_id: int, user_data: Annotated[UserUpdate, Depends()]):
+async def update_user_by_id(user_id: int, user_data: UserUpdate):
     updated_user = await update_user(user_id, user_data)
     return updated_user
 
 
 @app.put("/posts/{post_id}", response_model=PostGet)
-async def update_post_by_id(post_id: int, post_data: Annotated[PostUpdate, Depends()]):
+async def update_post_by_id(post_id: int, post_data: PostUpdate):
     updated_post = await update_post(post_id, post_data)
     return updated_post
 
