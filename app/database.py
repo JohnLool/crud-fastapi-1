@@ -4,6 +4,8 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from app.models import UserOrm, Base, PostOrm
 from app.config import settings
 from app.schemas import UserCreate, PostCreate, UserUpdate, PostUpdate
+from app.auth import hash_password, verify_password
+
 
 engine = create_async_engine(
     url=settings.database_url,
@@ -32,6 +34,12 @@ async def get_user(user_id: int):
         return result.scalar_one_or_none()
 
 
+async def get_user_by_username(username: str):
+    async with session_factory() as session:
+        result = await session.execute(select(UserOrm).filter(UserOrm.username == username))
+        return result.scalar_one_or_none()
+
+
 async def get_all_posts():
     async with session_factory() as session:
         result = await session.execute(select(PostOrm))
@@ -48,7 +56,7 @@ async def insert_user(user: UserCreate):
     user_to_add = UserOrm(
         username=user.username,
         email=user.email,
-        password=user.password
+        password=hash_password(user.password)
     )
     async with session_factory() as session:
         session.add(user_to_add)
@@ -101,3 +109,12 @@ async def delete_post(post_id: int):
         await session.delete(post)
         await session.commit()
         return post
+
+
+async def authenticate_user(username: str, password: str):
+    user = await get_user_by_username(username)  # получаем пользователя по имени
+    if not user:
+        return None
+    if not verify_password(password, user["password"]):  # сравнение хэша пароля
+        return None
+    return user
