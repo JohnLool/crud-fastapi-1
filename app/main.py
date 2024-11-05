@@ -3,9 +3,9 @@ from typing import List, Annotated
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
-from database import get_all_posts, get_post, create_db, get_user, get_all_users, \
+from app.database import get_all_posts, get_post, create_db, get_user, get_all_users, \
     insert_user, insert_post, update_user, update_post, delete_user, delete_post
-from schemas import UserCreate, UserGet, PostGet, PostCreate, UserUpdate, PostCreate, PostUpdate
+from app.schemas import UserCreate, UserGet, PostGet, PostCreate, UserUpdate, PostCreate, PostUpdate
 
 app = FastAPI()
 

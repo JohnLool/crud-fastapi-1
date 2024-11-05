@@ -1,9 +1,9 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
-from models import UserOrm, Base, PostOrm
-from config import settings
-from schemas import UserCreate, PostCreate, UserUpdate, PostUpdate
+from app.models import UserOrm, Base, PostOrm
+from app.config import settings
+from app.schemas import UserCreate, PostCreate, UserUpdate, PostUpdate
 
 engine = create_async_engine(
     url=settings.database_url,
