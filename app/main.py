@@ -1,10 +1,11 @@
 import asyncio
 from typing import List, Annotated
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, status, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.auth import verify_password
 from app.database import get_all_posts, get_post, create_db, get_user, get_all_users, \
-    insert_user, insert_post, update_user, update_post, delete_user, delete_post
+    insert_user, insert_post, update_user, update_post, delete_user, delete_post, get_user_by_username
 from app.schemas import UserCreate, UserGet, PostGet, PostCreate, UserUpdate, PostCreate, PostUpdate
 
 app = FastAPI()
@@ -17,6 +18,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.post("/auth/", response_model=UserGet)
+async def authenticate_user(username: str, password: str):
+    user = await get_user_by_username(username)
+    if user is None or not verify_password(password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid username or password",
+        )
+    return user
+
 
 @app.post("/users/", response_model=UserCreate)
 async def add_user(user: UserCreate):
