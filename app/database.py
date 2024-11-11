@@ -56,7 +56,7 @@ async def insert_user(user: UserCreate):
     user_to_add = UserOrm(
         username=user.username,
         email=user.email,
-        password=hash_password(user.password)
+        hashed_password=hash_password(user.password)
     )
     async with session_factory() as session:
         session.add(user_to_add)
@@ -112,9 +112,9 @@ async def delete_post(post_id: int):
 
 
 async def authenticate_user(username: str, password: str):
-    user = await get_user_by_username(username)  # получаем пользователя по имени
+    user = await get_user_by_username(username)
     if not user:
         return None
-    if not verify_password(password, user["password"]):  # сравнение хэша пароля
+    if not verify_password(password, user["password"]):
         return None
     return user

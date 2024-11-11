@@ -14,7 +14,7 @@ class UserOrm(Base):
     id: Mapped[intpk]
     username: Mapped[str] = mapped_column(String, unique=True)
     email: Mapped[str] = mapped_column(String, unique=True)
-    password: Mapped[str] = mapped_column(String)
+    hashed_password: Mapped[str] = mapped_column(String)
 
 
 class PostOrm(Base):
