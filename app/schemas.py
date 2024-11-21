@@ -5,7 +5,7 @@ class UserBase(BaseModel):
     username: str
     email: EmailStr
 
-
+#sdg
 class UserCreate(UserBase):
     password: str
 
