@@ -10,7 +10,7 @@ from app.database import get_user_by_username
 from app.config import settings
 from datetime import timedelta, timezone, datetime
 
-#fds
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 

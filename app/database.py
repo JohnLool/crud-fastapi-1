@@ -7,7 +7,7 @@ from app.models import UserOrm, Base, PostOrm
 from app.config import settings
 from app.schemas import UserCreate, PostCreate, UserUpdate, PostUpdate
 from app.utils import hash_password, verify_password
-#fsdg
+
 
 engine = create_async_engine(
     url=settings.database_url,

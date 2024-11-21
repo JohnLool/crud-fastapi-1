@@ -13,7 +13,7 @@ from app.database import get_all_posts, get_post, create_db, get_user, get_all_u
 from app.schemas import Token, UserCreate, UserGet, PostGet, PostCreate, UserUpdate, PostCreate, PostUpdate, PostBase
 from app.config import settings
 
-#sdg
+
 app = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 

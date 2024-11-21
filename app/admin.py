@@ -4,10 +4,9 @@ from sqladmin import Admin, ModelView
 from app.database import engine
 from app.models import UserOrm, PostOrm
 
-#vdgsd
+
 class UserAdmin(ModelView, model=UserOrm):
     column_list = ["id", "username", "email", "is_active", "is_superuser"]
-
     form_columns = ["username", "email", "hashed_password", "is_active", "is_superuser"]
     name = "User"
     name_plural = "Users"
