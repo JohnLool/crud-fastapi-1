@@ -15,7 +15,9 @@ class UserOrm(Base):
     username: Mapped[str] = mapped_column(String, unique=True)
     email: Mapped[str] = mapped_column(String, unique=True)
     hashed_password: Mapped[str] = mapped_column(String)
-
+    created_at: Mapped[datetime] = mapped_column(default=func.now())
+    is_active: Mapped[bool] = mapped_column(default=True)
+    is_superuser: Mapped[bool] = mapped_column(default=False)
 
 class PostOrm(Base):
     __tablename__ = "posts"
